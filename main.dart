@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-//import 'dart:math';
-//enum whyfarther { harder, smarter, selfstarter, tranding }
 void main() {
   runApp(Whatsapp());
 }
@@ -12,22 +9,59 @@ class Whatsapp extends StatefulWidget {
 }
 
 class _Whatsappstate extends State<Whatsapp> {
-  // enum whyfarther {harder,smarter,selfstarter,tranding}
-   Widget simplepop(){
-   PopupMenuButton<int>(
-                      itemBuilder: (context) =>[
-                        PopupMenuItem(
-                        value:1,
-                        child:Text("first"),
-                        ),
-                         PopupMenuItem(
-                        value:2,
-                        child:Text("second"),
-                        ),
-                      ],
-                        
-                 );
-   }
+  int indexTab = 1;
+
+  Widget simplepop() {
+    return PopupMenuButton<int>(
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Text("first"),
+        ),
+        PopupMenuItem(
+          value: 2,
+          child: Text("second"),
+        ),
+      ],
+    );
+  }
+
+  Widget _setactionbutton(int value) {
+    if (value == 0) {
+      return Container();
+    } else if (value == 1) {
+      return FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.chat),
+        backgroundColor: Colors.teal,
+      );
+    } else if (value == 2) {
+      return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        FloatingActionButton(
+          child: Icon(Icons.edit),
+          onPressed: () {},
+          heroTag: null,
+          backgroundColor:Colors.black87,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        FloatingActionButton(
+          child: Icon(Icons.camera_alt),
+          onPressed: () {},
+          heroTag: null,
+          backgroundColor:Colors.teal,
+        )
+      ]);
+    } else {
+      return FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.call),
+        backgroundColor: Colors.teal,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,12 +70,8 @@ class _Whatsappstate extends State<Whatsapp> {
       home: SafeArea(
         child: DefaultTabController(
           length: 4,
+          initialIndex: 1,
           child: Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.chat),
-              backgroundColor: Colors.teal,
-            ),
             appBar: AppBar(
               backgroundColor: Colors.teal,
               title: Text("WhatsApp"),
@@ -52,12 +82,17 @@ class _Whatsappstate extends State<Whatsapp> {
                 ),
                 IconButton(
                   icon: Icon(Icons.more_vert),
-                  onPressed:()=>simplepop(),
-                   
-                  
+                  onPressed: () {
+                    simplepop();
+                  },
                 ),
               ],
               bottom: TabBar(
+                onTap: (index) {
+                  setState(() {
+                    indexTab = index;
+                  });
+                },
                 tabs: <Widget>[
                   Tab(
                     child: IconButton(
@@ -77,6 +112,7 @@ class _Whatsappstate extends State<Whatsapp> {
                 ],
               ),
             ),
+            floatingActionButton: _setactionbutton(indexTab),
             body: TabBarView(
               children: <Widget>[
                 Center(
